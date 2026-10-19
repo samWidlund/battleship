@@ -1,3 +1,5 @@
+import random as r
+
 # Initial values
 ROW, COL = 10, 10
 grid = [[0 for _ in range(ROW)] for _ in range(COL)]
@@ -21,11 +23,8 @@ def placeShip(grid, ship_length, x, y, orientation):
                 return False
             for i in range(ship_length):
                 grid[y + i][x] = 1
-
     return True
     
-
-
 def getIndex(x,y):
     if y in letters_pos:
         return (x, letters_pos[y])
@@ -39,20 +38,17 @@ def updateGrid(grid, tuple, value):
 
     return None
 
-updateGrid(grid,getIndex(1,"B"), 1)
+def machine(grid):
+    orientation = ["horizontal", "vertical"]
+    x_pos = r.randint(0,9)
+    y_pos = r.randint(0,9)
+    ship_len = r.randint(0,4)
+    ship_orientation = orientation[r.randint(0,1)]
 
-# Display grid
-for row in grid:
-    print(row)
+    print(f"x,y : {x_pos}, {y_pos}")
+    print(placeShip(grid, ship_len, x_pos, y_pos, ship_orientation))
 
-print(f"Placed: {placeShip(grid, 3, 7, 4, 'vertical')}")
-
-
-shoot(grid, 7, 5)
-
-
-
-print()
+machine(grid)
 
 for row in grid:
     print(row)
