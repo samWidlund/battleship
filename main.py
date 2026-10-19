@@ -16,12 +16,17 @@ def placeShip(grid, ship_length, x, y, orientation):
         if x + ship_length > 10:
             return False
         for i in range(ship_length):
+            if grid[y][x + i] != 0:
+                return False
             grid[y][x + i] = 1
 
     if orientation == "vertical":
             if y + ship_length > 10:
                 return False
             for i in range(ship_length):
+                if grid[y + i][x] != 0:
+                    return False
+
                 grid[y + i][x] = 1
     return True
     
@@ -47,8 +52,6 @@ def machine(grid):
 
     print(f"x,y : {x_pos}, {y_pos}")
     print(placeShip(grid, ship_len, x_pos, y_pos, ship_orientation))
-
-machine(grid)
 
 for row in grid:
     print(row)
