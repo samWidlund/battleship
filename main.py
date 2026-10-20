@@ -1,16 +1,14 @@
 import random as r
 
-# Initial values
-ROW, COL = 10, 10
-grid = [[0 for _ in range(ROW)] for _ in range(COL)]
-
-
 def shoot(grid, x, y):
     pos = grid[y][x] 
     if pos == 1:
         grid[y][x] = 2
+        return True
+
     elif pos == 0:
         grid[y][x] = 3
+        return False
 
 def placeShip(grid, ship_length, x, y, orientation):
     if orientation == "horizontal":
@@ -55,7 +53,7 @@ def machine(grid):
 
     return placeShip(grid, ship_len, x_pos, y_pos, ship_orientation)
 
-def aiRandomPlace(count):
+def aiRandomPlace(grid, count):
     counter = 0
     while counter < count:
         if machine(grid) == True:
@@ -68,9 +66,7 @@ def checkWin(grid):
                 return False
     return True
 
-placeShip(grid, 1, 0, 0, "horizontal")
-
-#Input format D2 = 4,1 etc
+# Input format D2 = 4,1 etc
 def parsePlayerInput(input_string):
     letters_pos = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H": 7, "I":8, "J":9}
     x = 0
@@ -82,7 +78,6 @@ def parsePlayerInput(input_string):
     else:
         valid = False
 
-
     if int(input_string[1:]) <= 10:
         x = int(input_string[1:]) - 1
     else:
@@ -91,24 +86,32 @@ def parsePlayerInput(input_string):
     return (valid, x, y)
 
 def askUser ():
-    return input("Shoot eg. D2 = 4,1 ")
-
+    return input("Shoot eg. D2 = 4,1 ").upper()
 
 def playSingle():
+    # Initial values
+    ROW, COL = 10, 10
+    grid = [[0 for _ in range(ROW)] for _ in range(COL)]
     win = False
+
+    aiRandomPlace(grid, 1)
 
     while win == False:
         displayGrid(grid)
 
-        if checkWin(grid) == True:
-            print("Win!")
-            break
-
         input = askUser()
         valid, x, y = parsePlayerInput(input)
+
         while valid != True:
             askUser()
 
-        shoot(grid, x, y)
+        if shoot(grid, x, y):
+            print("Hit on ship")
+        else:
+            print("Miss!")
+
+        if checkWin(grid) == True:
+            print("Win!")
+            win = True
 
 playSingle()
