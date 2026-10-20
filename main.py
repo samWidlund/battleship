@@ -68,14 +68,7 @@ def checkWin(grid):
                 return False
     return True
 
-#aiRandomPlace(1)
-
-print()
-
 placeShip(grid, 1, 0, 0, "horizontal")
-
-shoot(grid, 0, 0)
-displayGrid(grid)
 
 #Input format D2 = 4,1 etc
 def parsePlayerInput(input_string):
@@ -97,13 +90,25 @@ def parsePlayerInput(input_string):
 
     return (valid, x, y)
 
+def askUser ():
+    return input("Shoot eg. D2 = 4,1 ")
+
 
 def playSingle():
     win = False
-    #while win == False:
 
+    while win == False:
+        displayGrid(grid)
 
-print(parsePlayerInput("A1"))
-print(parsePlayerInput("B7"))
-print(parsePlayerInput("J10"))
-print(parsePlayerInput("X18"))
+        if checkWin(grid) == True:
+            print("Win!")
+            break
+
+        input = askUser()
+        valid, x, y = parsePlayerInput(input)
+        while valid != True:
+            askUser()
+
+        shoot(grid, x, y)
+
+playSingle()
