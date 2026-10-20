@@ -3,14 +3,14 @@ import random as r
 # Initial values
 ROW, COL = 10, 10
 grid = [[0 for _ in range(ROW)] for _ in range(COL)]
-letters_pos = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H": 7, "I":8, "J":9}
+
 
 def shoot(grid, x, y):
     pos = grid[y][x] 
     if pos == 1:
-        pos = 2
+        grid[y][x] = 2
     elif pos == 0:
-        pos = 3
+        grid[y][x] = 3
 
 def placeShip(grid, ship_length, x, y, orientation):
     if orientation == "horizontal":
@@ -31,12 +31,6 @@ def placeShip(grid, ship_length, x, y, orientation):
         for i in range(ship_length):
             grid[y + i][x] = 1
     return True
-    
-def getIndex(x,y):
-    if y in letters_pos:
-        return (x, letters_pos[y])
-    else:
-        return("Index out of range")
 
 def updateGrid(grid, tuple, value):
     x_value = tuple[0]
@@ -61,9 +55,55 @@ def machine(grid):
 
     return placeShip(grid, ship_len, x_pos, y_pos, ship_orientation)
 
-counter = 1
-while counter < 6:
-    if machine(grid) == True:
-        counter += 1
+def aiRandomPlace(count):
+    counter = 0
+    while counter < count:
+        if machine(grid) == True:
+            counter += 1
 
+def checkWin(grid):
+    for row in grid:
+        for x in row:
+            if x == 1:
+                return False
+    return True
+
+#aiRandomPlace(1)
+
+print()
+
+placeShip(grid, 1, 0, 0, "horizontal")
+
+shoot(grid, 0, 0)
 displayGrid(grid)
+
+#Input format D2 = 4,1 etc
+def parsePlayerInput(input_string):
+    letters_pos = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H": 7, "I":8, "J":9}
+    x = 0
+    y = 0
+    valid = True
+
+    if input_string[0] in letters_pos:
+        y = letters_pos[input_string[0]]
+    else:
+        valid = False
+
+
+    if int(input_string[1:]) <= 10:
+        x = int(input_string[1:]) - 1
+    else:
+        valid = False
+
+    return (valid, x, y)
+
+
+def playSingle():
+    win = False
+    #while win == False:
+
+
+print(parsePlayerInput("A1"))
+print(parsePlayerInput("B7"))
+print(parsePlayerInput("J10"))
+print(parsePlayerInput("X18"))
