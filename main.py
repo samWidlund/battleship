@@ -41,10 +41,11 @@ def displayGrid(grid):
     letters = "".join(chr(i) for i in range(ord("A"), ord("J") + 1))
     numbers = "  ".join(str(i) for i in range(1,11))
 
-    print(f"   {numbers}")
+    print(f"     {numbers}")
+    print("  ┏-------------------------------")
     index = 0
     for row in grid:
-        print(f"{letters[index]} {row}")
+        print(f"{letters[index]} | {row}")
         index += 1
     print()
 
