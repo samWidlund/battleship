@@ -38,8 +38,15 @@ def updateGrid(grid, tuple, value):
     return None
 
 def displayGrid(grid):
+    letters = "".join(chr(i) for i in range(ord("A"), ord("J") + 1))
+    numbers = "  ".join(str(i) for i in range(1,11))
+
+    print(f"   {numbers}")
+    index = 0
     for row in grid:
-        print(row)
+        print(f"{letters[index]} {row}")
+        index += 1
+    print()
 
 def machine(grid):
     orientation = ["horizontal", "vertical"]
@@ -49,7 +56,7 @@ def machine(grid):
     ship_len = r.randint(1,4)
     ship_orientation = orientation[r.randint(0,1)]
 
-    print(f"Placed ship: \n Pos:{x_pos},{y_pos} Size:{ship_len} Orientation:{ship_orientation}")
+    print(f"Placed ship: \n Pos:{x_pos},{y_pos} Size:{ship_len} Orientation:{ship_orientation}\n")
 
     return placeShip(grid, ship_len, x_pos, y_pos, ship_orientation)
 
@@ -95,6 +102,8 @@ def playSingle():
     win = False
 
     aiRandomPlace(grid, 1)
+
+    print("0 = no ship, 1 = ship, 2 = hit ship\n")
 
     while win == False:
         displayGrid(grid)
