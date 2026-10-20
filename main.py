@@ -97,7 +97,6 @@ def askUser (string):
     return input(f"{string}: ").upper()
 
 def playSingle():
-    # Initial values
     ROW, COL = 10, 10
     grid = [[0 for _ in range(ROW)] for _ in range(COL)]
     win = False
