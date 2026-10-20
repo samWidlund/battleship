@@ -86,7 +86,7 @@ def parsePlayerInput(input_string): # returns user input as bool and index tuple
     return (valid, x, y)
 
 def askUser (string):
-    return input(f"{string}: ").upper()
+    return input(f"{string}:\n").upper()
 
 def playSingle(): # loops until player has won / hit every ship
     ROW, COL = 10, 10
@@ -112,7 +112,8 @@ def playSingle(): # loops until player has won / hit every ship
             print("Miss!\n")
 
         if checkWin(grid) == True:
-            print("Win!")
+            displayGrid(grid)
+            print("Win! Every ship has been hit")
             win = True
 
 playSingle()
