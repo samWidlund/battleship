@@ -1,6 +1,6 @@
 import random as r
 
-def shoot(grid, x, y):
+def shoot(grid, x, y): # returns true or false and updates index to show if ship is hit or not
     pos = grid[y][x] 
     if pos == 1:
         grid[y][x] = 2
@@ -10,7 +10,7 @@ def shoot(grid, x, y):
         grid[y][x] = 3
         return False
 
-def placeShip(grid, ship_length, x, y, orientation):
+def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and returns true if position is in range
     if orientation == "horizontal":
         if x + ship_length > 10:
             return False
@@ -20,7 +20,7 @@ def placeShip(grid, ship_length, x, y, orientation):
         for i in range(ship_length):
             grid[y][x + i] = 1
 
-    if orientation == "vertical":
+    if orientation == "vertical": # replace if statements in this function with a seperate function
         if y + ship_length > 10:
             return False
         for i in range(ship_length):
@@ -29,13 +29,6 @@ def placeShip(grid, ship_length, x, y, orientation):
         for i in range(ship_length):
             grid[y + i][x] = 1
     return True
-
-def updateGrid(grid, tuple, value):
-    x_value = tuple[0]
-    y_value = tuple[1]
-    grid[y_value][x_value] = value
-
-    return None
 
 def displayGrid(grid):
     letters = "".join(chr(i) for i in range(ord("A"), ord("J") + 1))
@@ -61,7 +54,7 @@ def machine(grid):
 
     return placeShip(grid, ship_len, x_pos, y_pos, ship_orientation)
 
-def aiRandomPlace(grid, count):
+def aiRandomPlace(grid, count): # machine places {count} amount of ships
     counter = 0
     while counter < count:
         if machine(grid) == True:
@@ -74,8 +67,7 @@ def checkWin(grid):
                 return False
     return True
 
-# Input format D2 = 4,1 etc
-def parsePlayerInput(input_string):
+def parsePlayerInput(input_string): # returns user input as bool and index tuple , input format is eg. D2 = 4,1
     letters_pos = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H": 7, "I":8, "J":9}
     x = 0
     y = 0
@@ -96,7 +88,7 @@ def parsePlayerInput(input_string):
 def askUser (string):
     return input(f"{string}: ").upper()
 
-def playSingle():
+def playSingle(): # loops until player has won / hit every ship
     ROW, COL = 10, 10
     grid = [[0 for _ in range(ROW)] for _ in range(COL)]
     win = False
