@@ -92,8 +92,8 @@ def parsePlayerInput(input_string):
 
     return (valid, x, y)
 
-def askUser ():
-    return input("Shoot eg. D2 = 4,1 ").upper()
+def askUser (string):
+    return input(f"{string}: ").upper()
 
 def playSingle():
     # Initial values
@@ -108,16 +108,16 @@ def playSingle():
     while win == False:
         displayGrid(grid)
 
-        input = askUser()
+        input = askUser("Select position to shoot, eg. A2")
         valid, x, y = parsePlayerInput(input)
 
         while valid != True:
-            askUser()
+            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again"))
 
         if shoot(grid, x, y):
-            print("Hit on ship")
+            print("Hit on ship\n")
         else:
-            print("Miss!")
+            print("Miss!\n")
 
         if checkWin(grid) == True:
             print("Win!")
