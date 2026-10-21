@@ -11,7 +11,7 @@ def shoot(grid, x, y): # returns true or false and updates index to show if ship
         return False
 
 def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and returns true if position is in range
-    if orientation == "horizontal":
+    if orientation == 0:
         if x + ship_length > 10:
             return False
         for i in range(ship_length):
@@ -20,7 +20,7 @@ def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and r
         for i in range(ship_length):
             grid[y][x + i] = 1
 
-    if orientation == "vertical": # replace if statements in this function with a seperate function
+    if orientation == 1: # replace if statements in this function with a seperate function
         if y + ship_length > 10:
             return False
         for i in range(ship_length):
@@ -43,16 +43,15 @@ def displayGrid(grid):
     print()
 
 def machine(grid):
-    orientation = ["horizontal", "vertical"]
+    orientation = r.randint(0, 1)
 
     x_pos = r.randint(0,9)
     y_pos = r.randint(0,9)
-    ship_len = r.randint(1,4)
-    ship_orientation = orientation[r.randint(0,1)]
+    ship_len = r.randint(2,4)
 
-    print(f"Placed ship: \n Pos:{x_pos},{y_pos} Size:{ship_len} Orientation:{ship_orientation}\n")
+    print(f"Placed ship: \n Pos:{x_pos},{y_pos} Size:{ship_len} Orientation:{orientation}\n")
 
-    return placeShip(grid, ship_len, x_pos, y_pos, ship_orientation)
+    return placeShip(grid, ship_len, x_pos, y_pos, orientation)
 
 def aiRandomPlace(grid, count): # machine places {count} amount of ships
     counter = 0
@@ -93,7 +92,7 @@ def playSingle(): # loops until player has won / hit every ship
     grid = [[0 for _ in range(ROW)] for _ in range(COL)]
     win = False
 
-    aiRandomPlace(grid, 1)
+    aiRandomPlace(grid, 3)
 
     print("0 = no ship, 1 = ship, 2 = hit ship\n")
 
