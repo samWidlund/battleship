@@ -10,8 +10,8 @@ def shoot(grid, x, y): # returns true or false and updates index to show if ship
         grid[y][x] = 3
         return False
 
-def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and returns true if position is in range
-    if orientation == 0:
+def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and returns true if position is in range    
+    if orientation == 0: # horizontal
         if x + ship_length > 10:
             return False
         for i in range(ship_length):
@@ -20,7 +20,7 @@ def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and r
         for i in range(ship_length):
             grid[y][x + i] = 1
 
-    if orientation == 1: # replace if statements in this function with a seperate function
+    if orientation == 1: # vertical
         if y + ship_length > 10:
             return False
         for i in range(ship_length):
@@ -33,10 +33,11 @@ def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and r
 def displayGrid(grid):
     letters = "".join(chr(i) for i in range(ord("A"), ord("J") + 1))
     numbers = "  ".join(str(i) for i in range(1,11))
+    index = 0
 
     print(f"     {numbers}")
     print("  ┏-------------------------------")
-    index = 0
+
     for row in grid:
         print(f"{letters[index]} | {row}")
         index += 1
@@ -49,7 +50,7 @@ def machine(grid):
     y_pos = r.randint(0,9)
     ship_len = r.randint(2,4)
 
-    print(f"Placed ship: \n Pos:{x_pos},{y_pos} Size:{ship_len} Orientation:{orientation}\n")
+    print(f"Placed ship: \n Pos:{x_pos},{y_pos} Size:{ship_len} Orientation:{orientation}\n") # debug
 
     return placeShip(grid, ship_len, x_pos, y_pos, orientation)
 
