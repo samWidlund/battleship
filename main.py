@@ -1,4 +1,5 @@
 import random as r
+import os
 
 def shoot(grid, x, y): # returns true or false and updates index to show if ship is hit or not
     pos = grid[y][x] 
@@ -86,7 +87,7 @@ def parsePlayerInput(input_string): # returns user input as bool and index tuple
     return (valid, x, y)
 
 def askUser (string):
-    return input(f"{string}:\n").upper()
+    return input(f"{string}:\n")
 
 def playSingle(): # loops until player has won / hit every ship
     ROW, COL = 10, 10
@@ -100,11 +101,11 @@ def playSingle(): # loops until player has won / hit every ship
     while win == False:
         displayGrid(grid)
 
-        input = askUser("Select position to shoot, eg. A2")
+        input = askUser("Select position to shoot, eg. A2").upper()
         valid, x, y = parsePlayerInput(input)
 
         while valid != True:
-            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again"))
+            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again").upper())
 
         if shoot(grid, x, y):
             print("Hit on ship\n")
@@ -116,4 +117,34 @@ def playSingle(): # loops until player has won / hit every ship
             print("Win! Every ship has been hit")
             win = True
 
-playSingle()
+def clearScreen():
+    os.system('cls' if os.name == 'nt' else 'clear') # system deprecated?
+
+def playPair():
+    ROW, COL = 10, 10
+    grid1 = [[0 for _ in range(ROW)] for _ in range(COL)]
+    grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
+
+    win = False
+    placed_ship = 0
+
+    while not win:
+        while placed_ship < 3: # place 3 ships
+            user1_ship = askUser("Place ship")
+            valid1, x, y = parsePlayerInput(user1_ship)
+            placeShip(grid1, 1, x, y, 1)
+            if valid1:
+                displayGrid(grid1)
+
+            user2_ship = askUser("Place ship")
+            valid2, x, y = parsePlayerInput(user2_ship)
+            placeShip(grid2, 1, x, y, 1)
+            if valid2:
+                displayGrid(grid2)
+
+            if valid1 and valid2: # update placed ships if both user1 and user2 has placed in valid index
+                placed_ship += 1
+
+        clearScreen()
+        print(f"{placed_ship} ships placed")
+playPair()
