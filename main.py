@@ -125,26 +125,26 @@ def playPair():
     grid1 = [[0 for _ in range(ROW)] for _ in range(COL)]
     grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
 
-    win = False
+    run_game = True
     placed_ship = 0
 
-    while not win:
-        while placed_ship < 3: # place 3 ships
-            user1_ship = askUser("Place ship")
-            valid1, x, y = parsePlayerInput(user1_ship)
+    while placed_ship < 3:
+        user1_input = askUser("Place ship").upper()
+        valid, x, y = parsePlayerInput(user1_input)
+        if valid:
             placeShip(grid1, 1, x, y, 1)
-            if valid1:
-                displayGrid(grid1)
+            placed_ship += 1
+        else:
+            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again").upper())
+    displayGrid(grid1)
 
-            user2_ship = askUser("Place ship")
-            valid2, x, y = parsePlayerInput(user2_ship)
-            placeShip(grid2, 1, x, y, 1)
-            if valid2:
-                displayGrid(grid2)
+    while run_game:
+        user1_shoot = askUser("Shoot")
+        valid, x, y = parsePlayerInput(user1_shoot)
+        shoot(grid1, x, y)
 
-            if valid1 and valid2: # update placed ships if both user1 and user2 has placed in valid index
-                placed_ship += 1
-
-        clearScreen()
-        print(f"{placed_ship} ships placed")
+        if checkWin(grid1):
+            displayGrid(grid1)
+            print("Win!!!!")
+            run_game = False
 playPair()
