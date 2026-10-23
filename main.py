@@ -87,7 +87,7 @@ def parsePlayerInput(input_string): # returns user input as bool and index tuple
     return (valid, x, y)
 
 def askUser (string):
-    return input(f"{string}:\n")
+    return input(f"{string}:\n").upper()
 
 def playSingle(): # loops until player has won / hit every ship
     ROW, COL = 10, 10
@@ -101,11 +101,11 @@ def playSingle(): # loops until player has won / hit every ship
     while win == False:
         displayGrid(grid)
 
-        input = askUser("Select position to shoot, eg. A2").upper()
+        input = askUser("Select position to shoot, eg. A2")
         valid, x, y = parsePlayerInput(input)
 
         while valid != True:
-            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again").upper())
+            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again"))
 
         if shoot(grid, x, y):
             print("Hit on ship\n")
@@ -120,31 +120,46 @@ def playSingle(): # loops until player has won / hit every ship
 def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear') # system deprecated?
 
+def askUserPlaceShip():
+    length = askUser("Enter ship length (1-10)")
+    orientation = askUser("Enter orientation of ship, 0 = horizontal, 1 = vertical")
+    valid, x, y = parsePlayerInput(askUser("Enter position to place ship, like A1"))
+
+    if valid:
+        return (int(length), int(orientation), int(x), int(y))
+
+def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
+    count1, count2 = 0, 0
+
+    # player 1
+    while count1 < amount_ships:
+        print("User1")
+        len, orientation, x, y = askUserPlaceShip()
+        placeShip(grid1, len, x, y, orientation)
+        displayGrid(grid1)
+        count1 += 1
+
+    # player 2
+    while count2 < amount_ships:
+        print("User2")
+        len, orientation, x, y = askUserPlaceShip()
+        placeShip(grid2, len, x, y, orientation)
+        displayGrid(grid2)
+        displayGrid(grid2)
+        count2 += 1
+
+    clearScreen()
+
 def playPair():
     ROW, COL = 10, 10
     grid1 = [[0 for _ in range(ROW)] for _ in range(COL)]
     grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
 
-    run_game = True
-    placed_ship = 0
+    usersPlaceShips(grid1, grid2, 1)
 
-    while placed_ship < 3:
-        user1_input = askUser("Place ship").upper()
-        valid, x, y = parsePlayerInput(user1_input)
-        if valid:
-            placeShip(grid1, 1, x, y, 1)
-            placed_ship += 1
-        else:
-            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again").upper())
+    print("User1:")
     displayGrid(grid1)
+    print("User2:")
+    displayGrid(grid2)
 
-    while run_game:
-        user1_shoot = askUser("Shoot")
-        valid, x, y = parsePlayerInput(user1_shoot)
-        shoot(grid1, x, y)
-
-        if checkWin(grid1):
-            displayGrid(grid1)
-            print("Win!!!!")
-            run_game = False
 playPair()
