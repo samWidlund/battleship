@@ -1,5 +1,6 @@
 import random as r
 import os
+import subprocess
 
 def shoot(grid, x, y): # returns true or false and updates index to show if ship is hit or not
     pos = grid[y][x] 
@@ -118,7 +119,8 @@ def playSingle(): # loops until player has won / hit every ship
             win = True
 
 def clearScreen():
-    os.system('cls' if os.name == 'nt' else 'clear') # system deprecated?
+    command = "cls" if os.name == "nt" else "clear" # runs cls if window os, otherwise clear for unix based systems
+    subprocess.run(command, shell=True)
 
 def askUserPlaceShip():
     length = askUser("Enter ship length (1-10)")
