@@ -47,7 +47,6 @@ def displayGrid(grid):
 
 def machine(grid):
     orientation = r.randint(0, 1)
-
     x_pos = r.randint(0,9)
     y_pos = r.randint(0,9)
     ship_len = r.randint(2,4)
@@ -69,7 +68,7 @@ def checkWin(grid):
                 return False
     return True
 
-def parsePlayerInput(input_string): # returns user input as bool and index tuple , input format is eg. D2 = 4,1
+def parsePlayerPosInput(input_string): # returns user input as bool and index tuple , input format is eg. D2 = 4,1
     letters_pos = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H": 7, "I":8, "J":9}
     x = 0
     y = 0
@@ -103,10 +102,10 @@ def playSingle(): # loops until player has won / hit every ship
         displayGrid(grid)
 
         input = askUser("Select position to shoot, eg. A2")
-        valid, x, y = parsePlayerInput(input)
+        valid, x, y = parsePlayerPosInput(input)
 
         while valid != True:
-            valid, x, y = parsePlayerInput(askUser("Index out of range, shoot again"))
+            valid, x, y = parsePlayerPosInput(askUser("Index out of range, shoot again"))
 
         if shoot(grid, x, y):
             print("Hit on ship\n")
@@ -125,7 +124,7 @@ def clearScreen():
 def askUserPlaceShip():
     length = askUser("Enter ship length (1-10)")
     orientation = askUser("Enter orientation of ship, 0 = horizontal, 1 = vertical")
-    valid, x, y = parsePlayerInput(askUser("Enter position to place ship, like A1"))
+    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1"))
 
     if valid:
         return (int(length), int(orientation), int(x), int(y))
