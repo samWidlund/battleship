@@ -162,5 +162,8 @@ def playPair():
     displayGrid(grid1)
     print("User2:")
     displayGrid(grid2)
-
-playPair()
+try:
+    playPair()
+except (KeyboardInterrupt):
+    clearScreen()
+    print("Process killed by keyboard")
