@@ -117,17 +117,29 @@ def playSingle(): # loops until player has won / hit every ship
             print("Win! Every ship has been hit")
             win = True
 
+# NYTT ---------------------
+
 def clearScreen():
     command = "cls" if os.name == "nt" else "clear" # runs cls if window os, otherwise clear for unix based systems
     subprocess.run(command, shell=True)
 
 def askUserPlaceShip():
-    length = askUser("Enter ship length (1-10)")
-    orientation = askUser("Enter orientation of ship, 0 = horizontal, 1 = vertical")
-    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1"))
+    valid_length = ("1","2","3","4","5","6","7","8","9","10")
+    valid_orientation = ("0","1")
 
-    if valid:
-        return (int(length), int(orientation), int(x), int(y))
+    length = askUser("Enter ship length (1-10)")
+    while length not in valid_length:
+        length = askUser("Invalid input, enter length (1-10)")
+
+    orientation = askUser("Enter orientation of ship, 0 = horizontal, 1 = vertical")
+    while orientation not in valid_orientation:
+        orientation = askUser("Invalid input, 0 = horizontal, 1 = vertical")
+
+    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1")) # does not handle if input is like "AWDAWDAWDADWDDAW"
+    while not valid:
+        valid, x, y = parsePlayerPosInput(askUser("Invalid input, enter position like A1"))
+
+    return (int(length), int(orientation), int(x), int(y))
 
 def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
     count1, count2 = 0, 0
@@ -162,6 +174,7 @@ def playPair():
     displayGrid(grid1)
     print("User2:")
     displayGrid(grid2)
+
 try:
     playPair()
 except (KeyboardInterrupt):
