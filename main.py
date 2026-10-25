@@ -79,9 +79,12 @@ def parsePlayerPosInput(input_string): # returns user input as bool and index tu
     else:
         valid = False
 
-    if int(input_string[1:]) <= 10:
-        x = int(input_string[1:]) - 1
-    else:
+    try:
+        if int(input_string[1:]) <= 10:
+            x = int(input_string[1:]) - 1
+        else:
+            valid = False
+    except ValueError: # if {input_string} is something completely wrong like "awadsadWAaWASd"
         valid = False
 
     return (valid, x, y)
@@ -117,8 +120,6 @@ def playSingle(): # loops until player has won / hit every ship
             print("Win! Every ship has been hit")
             win = True
 
-# NYTT ---------------------
-
 def clearScreen():
     command = "cls" if os.name == "nt" else "clear" # runs cls if window os, otherwise clear for unix based systems
     subprocess.run(command, shell=True)
@@ -135,8 +136,8 @@ def askUserPlaceShip():
     while orientation not in valid_orientation:
         orientation = askUser("Invalid input, 0 = horizontal, 1 = vertical")
 
-    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1")) # does not handle if input is like "AWDAWDAWDADWDDAW"
-    while not valid:
+    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1"))
+    while valid != True:
         valid, x, y = parsePlayerPosInput(askUser("Invalid input, enter position like A1"))
 
     return (int(length), int(orientation), int(x), int(y))
