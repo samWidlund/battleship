@@ -1,6 +1,7 @@
 import random as r
 import os
 import subprocess
+import time
 
 def shoot(grid, x, y): # returns true or false and updates index to show if ship is hit or not
     pos = grid[y][x] 
@@ -152,6 +153,8 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
         placeShip(grid1, len, x, y, orientation)
         displayGrid(grid1)
         count1 += 1
+    time.sleep(2)
+    clearScreen()
 
     # player 2
     while count2 < amount_ships:
@@ -161,7 +164,7 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
         displayGrid(grid2)
         displayGrid(grid2)
         count2 += 1
-
+    time.sleep(2)
     clearScreen()
 
 def playPair():
@@ -171,6 +174,7 @@ def playPair():
 
     usersPlaceShips(grid1, grid2, 1)
 
+    # debug
     print("User1:")
     displayGrid(grid1)
     print("User2:")
@@ -178,6 +182,7 @@ def playPair():
 
 try:
     playPair()
-except (KeyboardInterrupt):
+
+except KeyboardInterrupt:
     clearScreen()
     print("Process killed by keyboard")
