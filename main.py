@@ -144,8 +144,6 @@ def askUserPlaceShip(grid):
         valid, x, y = parsePlayerPosInput(askUser("Invalid input, enter position like A1"))
         placed =  placeShip(grid, int(length), x, y, int(orientation))
 
-
-
     return (int(length), int(orientation), int(x), int(y))
 
 def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
@@ -176,17 +174,35 @@ def playPair():
     grid1 = [[0 for _ in range(ROW)] for _ in range(COL)]
     grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
 
-    print(placeShip(grid1, 6, 8, 0, 0))
-    input()
     usersPlaceShips(grid1, grid2, 1)
 
-    # debug
-    print("User1:")
-    displayGrid(grid1)
-    print("User2:")
-    displayGrid(grid2)
+    while True: # improve logic / make function
+        user1_shoot = askUser("User1 shoot")
+        valid, x, y = parsePlayerPosInput(user1_shoot)
+        if valid:
+            if shoot(grid2, x, y):
+                print("Hit!")
+            else:
+                print("Miss!")
 
+            displayGrid(grid2)
+        if checkWin(grid2):
+            print("User1 wins")
+            break
 
+        user2_shoot = askUser("User2 shoot")
+        valid, x, y = parsePlayerPosInput(user2_shoot)
+        if valid:
+            if shoot(grid1, x, y):
+                print("Hit!")
+            else:
+                print("Miss!")
+            displayGrid(grid1)
+
+        if checkWin(grid1):
+            displayGrid(grid2)
+            print("User2 wins")
+            break
 
 try:
     playPair()
