@@ -151,58 +151,78 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
 
     # player 1
     while count1 < amount_ships:
-        print("User1")
+        print("User1 grid")
         displayGrid(grid1)
         askUserPlaceShip(grid1)
+        print("User1 grid")
         displayGrid(grid1)
         count1 += 1
-    time.sleep(2)
-    clearScreen()
+    #time.sleep(2)
+    #clearScreen()
 
     # player 2
     while count2 < amount_ships:
-        print("User2")
+        print("User2 grid")
         displayGrid(grid2)
         askUserPlaceShip(grid2)
+        print("User2 grid")
         displayGrid(grid2)
         count2 += 1
-    time.sleep(2)
-    clearScreen()
+    #time.sleep(2)
+    #clearScreen()
+
+def userShoot(shoot_grid):
+    user_input = askUser("Shoot")
+    valid, x, y = parsePlayerPosInput(user_input)
+    if valid:
+        if shoot(shoot_grid, x, y):
+            print("Hit!")
+            return True
+
+        else:
+            return False
 
 def playPair():
     ROW, COL = 10, 10
     grid1 = [[0 for _ in range(ROW)] for _ in range(COL)]
     grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
+    win = False
 
     usersPlaceShips(grid1, grid2, 1)
 
-    while True: # improve logic / make function
-        user1_shoot = askUser("User1 shoot")
-        valid, x, y = parsePlayerPosInput(user1_shoot)
-        if valid:
-            if shoot(grid2, x, y):
-                print("Hit!")
-            else:
-                print("Miss!")
+    while not win:
 
-            displayGrid(grid2)
-        if checkWin(grid2):
-            print("User1 wins")
+        user1_shoot = userShoot(grid2)
+        while user1_shoot:
+            if checkWin(grid2):
+                print("User 1 wins!")
+                win = True
+                break
+            else:
+                user1_shoot = userShoot(grid2)
+
+        if win:
             break
 
-        user2_shoot = askUser("User2 shoot")
-        valid, x, y = parsePlayerPosInput(user2_shoot)
-        if valid:
-            if shoot(grid1, x, y):
-                print("Hit!")
-            else:
-                print("Miss!")
-            displayGrid(grid1)
+        print("User2 grid:")
+        displayGrid(grid2)
 
-        if checkWin(grid1):
-            displayGrid(grid2)
-            print("User2 wins")
+        user2_shoot = userShoot(grid1)
+        while user2_shoot:
+            if checkWin(grid1):
+                print("User 2 wins!")
+                win = True
+                break
+            else:
+                user2_shoot = userShoot(grid1)
+
+        print("User1 grid:")
+        displayGrid(grid1)
+
+        if win:
             break
+
+    print("game is over")
 
 try:
     playPair()
