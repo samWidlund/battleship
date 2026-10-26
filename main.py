@@ -157,8 +157,8 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
         print("User1 grid")
         displayGrid(grid1)
         count1 += 1
-    #time.sleep(2)
-    #clearScreen()
+    time.sleep(2)
+    clearScreen()
 
     # player 2
     while count2 < amount_ships:
@@ -168,8 +168,8 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
         print("User2 grid")
         displayGrid(grid2)
         count2 += 1
-    #time.sleep(2)
-    #clearScreen()
+    time.sleep(2)
+    clearScreen()
 
 def userShoot(shoot_grid):
     user_input = askUser("Shoot")
@@ -178,7 +178,6 @@ def userShoot(shoot_grid):
         if shoot(shoot_grid, x, y):
             print("Hit!")
             return True
-
         else:
             return False
 
@@ -191,7 +190,6 @@ def playPair():
     usersPlaceShips(grid1, grid2, 1)
 
     while not win:
-
         user1_shoot = userShoot(grid2)
         while user1_shoot:
             if checkWin(grid2):
@@ -200,7 +198,6 @@ def playPair():
                 break
             else:
                 user1_shoot = userShoot(grid2)
-
         if win:
             break
 
@@ -222,7 +219,7 @@ def playPair():
         if win:
             break
 
-    print("game is over")
+    print("Game is over")
 
 try:
     playPair()
