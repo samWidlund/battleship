@@ -212,12 +212,11 @@ def playPair():
                 break
             else:
                 user2_shoot = userShoot(grid1)
+        if win:
+            break
 
         print("User1 grid:")
         displayGrid(grid1)
-
-        if win:
-            break
 
     print("Game is over")
 
