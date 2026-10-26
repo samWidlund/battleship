@@ -81,7 +81,7 @@ def parsePlayerPosInput(input_string): # returns user input as bool and index tu
         valid = False
 
     try:
-        if int(input_string[1:]) <= 10:
+        if int(input_string[1:]) <= 10 and int(input_string[1:]) > 0:
             x = int(input_string[1:]) - 1
         else:
             valid = False
@@ -125,7 +125,7 @@ def clearScreen():
     command = "cls" if os.name == "nt" else "clear" # runs cls if window os, otherwise clear for unix based systems
     subprocess.run(command, shell=True)
 
-def askUserPlaceShip():
+def askUserPlaceShip(grid):
     valid_length = ("1","2","3","4","5","6","7","8","9","10")
     valid_orientation = ("0","1")
 
@@ -138,8 +138,13 @@ def askUserPlaceShip():
         orientation = askUser("Invalid input, 0 = horizontal, 1 = vertical")
 
     valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1"))
-    while valid != True:
+    if (valid):
+        placed = placeShip(grid, int(length), x, y, int(orientation))
+    while (valid != True) or (placed == False):
         valid, x, y = parsePlayerPosInput(askUser("Invalid input, enter position like A1"))
+        placed =  placeShip(grid, int(length), x, y, int(orientation))
+
+
 
     return (int(length), int(orientation), int(x), int(y))
 
@@ -149,8 +154,8 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
     # player 1
     while count1 < amount_ships:
         print("User1")
-        len, orientation, x, y = askUserPlaceShip()
-        placeShip(grid1, len, x, y, orientation)
+        displayGrid(grid1)
+        askUserPlaceShip(grid1)
         displayGrid(grid1)
         count1 += 1
     time.sleep(2)
@@ -159,9 +164,8 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
     # player 2
     while count2 < amount_ships:
         print("User2")
-        len, orientation, x, y = askUserPlaceShip()
-        placeShip(grid2, len, x, y, orientation)
         displayGrid(grid2)
+        askUserPlaceShip(grid2)
         displayGrid(grid2)
         count2 += 1
     time.sleep(2)
@@ -172,6 +176,8 @@ def playPair():
     grid1 = [[0 for _ in range(ROW)] for _ in range(COL)]
     grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
 
+    print(placeShip(grid1, 6, 8, 0, 0))
+    input()
     usersPlaceShips(grid1, grid2, 1)
 
     # debug
@@ -179,6 +185,8 @@ def playPair():
     displayGrid(grid1)
     print("User2:")
     displayGrid(grid2)
+
+
 
 try:
     playPair()
