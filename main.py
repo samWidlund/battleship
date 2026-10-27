@@ -142,7 +142,9 @@ def askUserPlaceShip(grid):
     valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1")) # if input is wrong twice, A1 does not count as valid input?
     if (valid):
         placed = placeShip(grid, int(length), x, y, int(orientation))
+        print("test")
     while (valid != True) or (placed == False):
+        print("testfel")
         valid, x, y = parsePlayerPosInput(askUser("Invalid input, enter position like A1"))
         placed =  placeShip(grid, int(length), x, y, int(orientation))
 
@@ -183,15 +185,40 @@ def userShoot(shoot_grid):
         else:
             return False
 
+def displayDuringGame(grid):
+    letters = "".join(chr(i) for i in range(ord("A"), ord("J") + 1))
+    numbers = " ".join(str(i) for i in range(1,11))
+    index = 0
+
+    print(f"    {numbers}")
+    print("  ┏---------------------")
+    for row in grid:
+        temp = ""
+        for n in row:
+            if n == 1:
+                temp += "~ "
+            elif n == 2:
+                temp += "x "
+            elif n == 3:
+                temp += "○ "
+            elif n == 0:
+                temp += "~ "
+        print(f"{letters[index]} | {temp}")
+        index += 1
+    print()
+
+
 def playPair():
     ROW, COL = 10, 10
     grid1 = [[0 for _ in range(ROW)] for _ in range(COL)]
     grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
     win = False
 
-    usersPlaceShips(grid1, grid2, 1)
+    usersPlaceShips(grid1, grid2, 2)
 
     while not win:
+        print("debug")
+        displayDuringGame(grid2)
         user1_shoot = userShoot(grid2)
         while user1_shoot:
             if checkWin(grid2):
