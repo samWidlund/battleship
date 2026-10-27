@@ -35,14 +35,24 @@ def placeShip(grid, ship_length, x, y, orientation): # places ship in grid and r
 
 def displayGrid(grid):
     letters = "".join(chr(i) for i in range(ord("A"), ord("J") + 1))
-    numbers = "  ".join(str(i) for i in range(1,11))
+    numbers = " ".join(str(i) for i in range(1,11))
     index = 0
 
-    print(f"     {numbers}")
-    print("  ┏-------------------------------")
+    print(f"    {numbers}")
+    print("  ┏---------------------")
 
     for row in grid:
-        print(f"{letters[index]} | {row}")
+        display_row = ""
+        for pos in row:
+            if pos == 1:
+                display_row += "■ "
+            elif pos == 2:
+                display_row += "x "
+            elif pos == 3:
+                display_row += "○ "
+            elif pos == 0:
+                display_row += "~ "
+        print(f"{letters[index]} | {display_row}")
         index += 1
     print()
 
