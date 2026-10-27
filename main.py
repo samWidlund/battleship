@@ -75,6 +75,8 @@ def parsePlayerPosInput(input_string): # returns user input as bool and index tu
     y = 0
     valid = True
 
+    # currently fails if input_string is empty
+    
     if input_string[0] in letters_pos:
         y = letters_pos[input_string[0]]
     else:
@@ -137,7 +139,7 @@ def askUserPlaceShip(grid):
     while orientation not in valid_orientation:
         orientation = askUser("Invalid input, 0 = horizontal, 1 = vertical")
 
-    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1"))
+    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1")) # if input is wrong twice, A1 does not count as valid input?
     if (valid):
         placed = placeShip(grid, int(length), x, y, int(orientation))
     while (valid != True) or (placed == False):
