@@ -128,7 +128,7 @@ def playSingle(): # loops until player has won / hit every ship
         if shoot(grid, x, y):
             print("Hit on ship\n")
         else:
-            print("Miss!\n")
+            print("Miss!\n") # prints miss if shot is on already shot position?
 
         if checkWin(grid) == True:
             displayGrid(grid, "Current")
@@ -195,6 +195,7 @@ def userShoot(shoot_grid):
         else:
             clearScreen()
             print("\nMiss!")
+            displayDuringGame(shoot_grid)
             return False
 
 def displayDuringGame(grid):
@@ -240,7 +241,7 @@ def playPair():
     win = False
 
     displayIntro()
-    usersPlaceShips(grid1, grid2, 2)
+    usersPlaceShips(grid1, grid2, 1)
 
     while not win:
         print("Player 1 shoot history: ")
@@ -257,6 +258,9 @@ def playPair():
             else:
                 print("Player 1 shoot")
                 user1_shoot = userShoot(grid2)
+            time.sleep(1)
+            clearScreen()
+
             print("Player 1 shoot history: ")
             print()
             displayDuringGame(grid2)
@@ -280,6 +284,8 @@ def playPair():
             else:
                 print("Player 2 shoot")
                 user2_shoot = userShoot(grid1)
+            time.sleep(1)
+            clearScreen()
 
             print("Player 2 shoot history:")
             print()
