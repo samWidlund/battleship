@@ -87,7 +87,8 @@ def parsePlayerPosInput(input_string): # returns user input as bool and index tu
     y = 0
     valid = True
 
-    # currently fails if input_string is empty
+    if len(input_string) < 1:
+        return (False, 0, 0)
     
     if input_string[0] in letters_pos:
         y = letters_pos[input_string[0]]
@@ -128,7 +129,7 @@ def playSingle(): # loops until player has won / hit every ship
         if shoot(grid, x, y):
             print("Hit on ship\n")
         else:
-            print("Miss!\n") # prints miss if shot is on already shot position?
+            print("Miss!\n")
 
         if checkWin(grid) == True:
             displayGrid(grid, "Current")
@@ -139,19 +140,16 @@ def clearScreen():
     command = "cls" if os.name == "nt" else "clear" # runs cls if window os, otherwise clear for unix based systems
     subprocess.run(command, shell=True)
 
-def askUserPlaceShip(grid):
-    valid_length = ("1","2","3","4","5","6","7","8","9","10")
+def askUserPlaceShip(grid, length):
     valid_orientation = ("0","1")
 
-    length = askUser("Enter ship length (1-10)")
-    while length not in valid_length:
-        length = askUser("Invalid input, enter length (1-10)")
+    print(f"Place ship of length {length}\n")
 
     orientation = askUser("Enter orientation of ship, 0 = horizontal, 1 = vertical")
     while orientation not in valid_orientation:
         orientation = askUser("Invalid input, 0 = horizontal, 1 = vertical")
 
-    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1")) # if input is wrong twice, A1 does not count as valid input?
+    valid, x, y = parsePlayerPosInput(askUser("Enter position to place ship, like A1"))
     if (valid):
         placed = placeShip(grid, int(length), x, y, int(orientation))
     while (valid != True) or (placed == False):
@@ -160,13 +158,15 @@ def askUserPlaceShip(grid):
 
     return (int(length), int(orientation), int(x), int(y))
 
-def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
+def usersPlaceShips(grid1, grid2, amount_ships):
     count1, count2 = 0, 0
+
+    ship_lengths = [4, 3, 2]
 
     # player 1
     while count1 < amount_ships:
         displayGrid(grid1, "Player 1")
-        askUserPlaceShip(grid1)
+        askUserPlaceShip(grid1, ship_lengths[count1])
         clearScreen()
         count1 += 1
     displayGrid(grid1, "Player 1")
@@ -176,7 +176,7 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
     # player 2
     while count2 < amount_ships:
         displayGrid(grid2, "Player 2")
-        askUserPlaceShip(grid2)
+        askUserPlaceShip(grid2, ship_lengths[count2])
         clearScreen()
         count2 += 1
     displayGrid(grid2, "Player 2")
@@ -186,6 +186,10 @@ def usersPlaceShips(grid1, grid2, amount_ships): # does not handle wrong inputs
 def userShoot(shoot_grid):
     user_input = input("Shoot: ").upper()
     valid, x, y = parsePlayerPosInput(user_input)
+
+    while valid == False:
+        user_input = input("Invalid input try again: ").upper()
+        valid, x, y = parsePlayerPosInput(user_input)
     if valid:
         if shoot(shoot_grid, x, y):
             clearScreen()
@@ -226,6 +230,8 @@ def displayIntro():
     print("\nBattleship game in terminal! 💣💣💣💣💣\n")
     print("========================================")
     print()
+    print("Each player places 3 ships of lengths 4, 3, 2")
+    print()
     print("Following icons represents:")
     print("   ■ = Ship")
     print("   ~ = Water / empty position")
@@ -240,11 +246,13 @@ def playPair():
     grid2 = [[0 for _ in range(ROW)] for _ in range(COL)]
     win = False
 
+
+
     displayIntro()
-    usersPlaceShips(grid1, grid2, 1)
+    usersPlaceShips(grid1, grid2, 3)
 
     while not win:
-        print("Player 1 shoot history: ")
+        print("Player 1: ")
         print()
         displayDuringGame(grid2)
 
@@ -270,7 +278,7 @@ def playPair():
         time.sleep(2)
         clearScreen()
 
-        print("Player 2 shoot history:")
+        print("Player 2:")
         print()
         displayDuringGame(grid1)
 
@@ -287,7 +295,7 @@ def playPair():
             time.sleep(1)
             clearScreen()
 
-            print("Player 2 shoot history:")
+            print("Player 2:")
             print()
             displayDuringGame(grid1)
 
